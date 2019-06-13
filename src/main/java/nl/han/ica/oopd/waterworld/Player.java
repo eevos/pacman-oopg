@@ -51,7 +51,6 @@ public class Player extends AnimatedSpriteObject implements ICollidableWithTiles
             setySpeed(0);
             setY(world.height - size);
         }
-
     }
 
     @Override

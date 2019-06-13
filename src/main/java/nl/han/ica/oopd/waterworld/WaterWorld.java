@@ -65,7 +65,7 @@ public class WaterWorld extends GameEngine {
      */
     private void createViewWithoutViewport(int screenWidth, int screenHeight) {
         View view = new View(screenWidth, screenHeight);
-        view.setBackground(loadImage("src/main/java/nl/han/ica/oopd/waterworld/media/background.jpg"));
+//        view.setBackground(loadImage("src/main/java/nl/han/ica/oopd/waterworld/media/background.jpg"));
 
         setView(view);
         size(screenWidth, screenHeight);
@@ -157,7 +157,7 @@ public class WaterWorld extends GameEngine {
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+                {-1, -1, -1, -1, 0, -1, 0, -1, -1, -1},
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
