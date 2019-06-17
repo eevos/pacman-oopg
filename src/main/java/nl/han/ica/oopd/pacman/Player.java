@@ -1,12 +1,14 @@
 package nl.han.ica.oopd.pacman;
 
 import nl.han.ica.oopg.collision.CollidedTile;
+import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
 import nl.han.ica.oopg.collision.ICollidableWithTiles;
+import nl.han.ica.oopg.objects.GameObject;
 import processing.core.PGraphics;
 
 import java.util.List;
 
-public class Player extends MovableObject implements ICollidableWithTiles {
+public class Player extends MovableObject implements ICollidableWithGameObjects {
     Pacman world;
 
     private Direction lastDirectionPressed = new Direction();
@@ -24,8 +26,6 @@ public class Player extends MovableObject implements ICollidableWithTiles {
 
         super.keyPressed(keyCode, key);
 
-
-
         Direction direction = new Direction();
 
         if (keyCode == world.LEFT) {
@@ -40,13 +40,17 @@ public class Player extends MovableObject implements ICollidableWithTiles {
             return;
         }
 
-        changeDirection(direction);
+        lastDirectionPressed = direction;
+
+        if (grid.canMoveInDirection(getX(), getY(), direction)) {
+            System.out.println("yeah");
+            changeDirection(direction);
+        }
     }
 
 
     @Override
     protected void changeDirection (Direction direction){
-        lastDirectionPressed = direction;
         super.changeDirection(direction);
     }
 
@@ -68,60 +72,10 @@ public class Player extends MovableObject implements ICollidableWithTiles {
         g.rect(getX(), getY(), width, height);
     }
 
-    @Override
-    public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
 
-//
-//        PVector vector;
-//
-//        for (CollidedTile ct : collidedTiles) {
-//
-//            if (ct.getTile() instanceof WallTile) {
-//
-//
-//                if (CollisionSide.TOP.equals(ct.getCollisionSide())) {
-//                    try {
-//                        setySpeed(0);
-//                        setY(getY() - speed);
-//
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (CollisionSide.BOTTOM.equals(ct.getCollisionSide())) {
-//                    try {
-//                        setySpeed(0);
-//                        setY(getY() + speed);
-//
-//
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (CollisionSide.RIGHT.equals(ct.getCollisionSide())) {
-//                    try {
-//                        setxSpeed(0);
-//                        setX(getX() + speed);
-//
-//
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (CollisionSide.LEFT.equals(ct.getCollisionSide())) {
-//
-//                    try {
-//                        setxSpeed(0);
-//                        setX(getX() - speed);
-//
-//
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//            }
-//        }
+    @Override
+    public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
+
     }
 }
 

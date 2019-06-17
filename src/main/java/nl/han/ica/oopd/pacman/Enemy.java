@@ -26,10 +26,6 @@ public class Enemy extends MovableObject {
 
         super.update();
 
-        System.out.println(speed);
-        System.out.println("xDir: " + currentDirection.x + ", yDir: " + currentDirection.y);
-
-
         if (grid.canMoveInDirection(getX(), getY(), turnDirection)) {
             changeDirection(turnDirection);
         }

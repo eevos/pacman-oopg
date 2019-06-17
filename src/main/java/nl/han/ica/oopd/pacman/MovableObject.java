@@ -8,6 +8,7 @@ public abstract class MovableObject extends GameObject {
     protected Direction currentDirection = new Direction();
     protected int baseSpeed;
     protected int speed = 0;
+    private boolean hasStarted = false;
 
 
     MovableObject(int x, int y, int width, int heigth) {
@@ -39,8 +40,13 @@ public abstract class MovableObject extends GameObject {
 
     @Override
     public void keyPressed(int keyCode, char key) {
-        speed = baseSpeed;
-        setSpeed(speed);
+
+        if (!hasStarted) {
+            speed = baseSpeed;
+            setSpeed(speed);
+            hasStarted = true;
+        }
+
     }
 
 

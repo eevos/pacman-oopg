@@ -13,6 +13,7 @@ public class Pacman extends GameEngine {
     private MovableObject player;
     private MovableObject enemy1;
     private MovableObject enemy2;
+    private MovableObject enemy3;
     private int tileSize;
     private int baseSpeed;
     private int numberOfTileColumns;
@@ -65,6 +66,7 @@ public class Pacman extends GameEngine {
         player = new Player(this, baseSpeed);
         enemy1 = new Enemy(this, baseSpeed);
         enemy2 = new Enemy(this, baseSpeed);
+        enemy3 = new Enemy(this, baseSpeed);
 
         int playerXposition = grid.getPostion(9);
         int playerYposition = grid.getPostion(12);
@@ -73,6 +75,7 @@ public class Pacman extends GameEngine {
         addGameObject(player, playerXposition, playerYposition);
         addGameObject(enemy1, playerXposition - tileSize, enemyYposition);
         addGameObject(enemy2, playerXposition + tileSize, enemyYposition);
+        addGameObject(enemy3, playerXposition, enemyYposition);
     }
 
     private void initializeTileMap() {
