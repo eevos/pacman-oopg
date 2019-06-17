@@ -10,10 +10,15 @@ import processing.core.PApplet;
 
 public class Pacman extends GameEngine {
 
-    private Player player;
+    private MovableObject player;
+    private MovableObject enemy1;
+    private MovableObject enemy2;
     private int tileSize;
+    private int baseSpeed;
     private int numberOfTileColumns;
     private int numberOfTileRows;
+    private Grid grid = Grid.getInstance();
+
 
     public static void main(String[] args) {
         String[] processingArgs = {"nl.han.ica.oopd.world.Pacman"};
@@ -26,11 +31,12 @@ public class Pacman extends GameEngine {
     public void setupGame() {
 
         tileSize = 40;
+        baseSpeed = 4;
+        grid.setProperties(tileSize, baseSpeed);
 
-        Grid grid = new Grid(tileSize);
 
-        numberOfTileRows = 22;
-        numberOfTileColumns = 19;
+        numberOfTileRows = grid.getGridMap().length;
+        numberOfTileColumns = grid.getGridMap()[0].length;
 
         int uiSize = 200;
 
@@ -56,12 +62,17 @@ public class Pacman extends GameEngine {
     }
 
     private void createObjects() {
-        player = new Player(this);
-        int playerXposition = tileSize*numberOfTileColumns/2-tileSize/2;
-        int playerYposition = tileSize*8 ;
+        player = new Player(this, baseSpeed);
+        enemy1 = new Enemy(this, baseSpeed);
+        enemy2 = new Enemy(this, baseSpeed);
+
+        int playerXposition = grid.getPostion(9);
+        int playerYposition = grid.getPostion(12);
+        int enemyYposition = grid.getPostion(8);
 
         addGameObject(player, playerXposition, playerYposition);
-
+        addGameObject(enemy1, playerXposition - tileSize, enemyYposition);
+        addGameObject(enemy2, playerXposition + tileSize, enemyYposition);
     }
 
     private void initializeTileMap() {
@@ -71,8 +82,6 @@ public class Pacman extends GameEngine {
 
         TileType[] tileTypes = {wallTileTileType};
 
-
-
-        tileMap = new TileMap(tileSize, tileTypes, GridMap.getGridMap());
+        tileMap = new TileMap(tileSize, tileTypes, grid.getGridMap());
     }
 }

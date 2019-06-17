@@ -1,49 +1,42 @@
 package nl.han.ica.oopd.pacman;
 
-import nl.han.ica.oopd.pacman.tiles.WallTile;
 import nl.han.ica.oopg.collision.CollidedTile;
-import nl.han.ica.oopg.collision.CollisionSide;
 import nl.han.ica.oopg.collision.ICollidableWithTiles;
-import nl.han.ica.oopg.exceptions.TileNotFoundException;
-import nl.han.ica.oopg.objects.GameObject;
 import processing.core.PGraphics;
-import processing.core.PVector;
 
 import java.util.List;
 
-public class Player extends GameObject implements ICollidableWithTiles {
+public class Player extends MovableObject implements ICollidableWithTiles {
     Pacman world;
-    private final int speed = 4;
-    private int[] direction = {0, 0};
 
-    private int[] lastDirectionPressed = {0,0};
-
-    private Grid grid;
+    private Direction lastDirectionPressed = new Direction();
 
 
-    public Player(Pacman world) {
+    public Player(Pacman world, int baseSpeed) {
 
         super(50, 50, 40, 40);
         this.world = world;
-        grid = new Grid(40);
-
+        this.baseSpeed = baseSpeed;
     }
 
     @Override
     public void keyPressed(int keyCode, char key) {
 
-        String direction;
+        super.keyPressed(keyCode, key);
+
+
+
+        Direction direction = new Direction();
 
         if (keyCode == world.LEFT) {
-            direction = "left";
+            direction.x = -1;
         } else if (keyCode == world.UP) {
-            direction = "up";
+            direction.y = -1;
         } else if (keyCode == world.RIGHT) {
-            direction = "right";
+            direction.x = 1;
         } else if (keyCode == world.DOWN) {
-            direction = "down";
-
-        } else{
+            direction.y = 1;
+        } else {
             return;
         }
 
@@ -51,57 +44,20 @@ public class Player extends GameObject implements ICollidableWithTiles {
     }
 
 
-    private void changeDirection (String directionString){
-
-        int angle = 0;
-        int [] direction = new int[2];
-
-        if (directionString == "left") {
-            direction[0] = -1;
-            direction[1] = 0;
-            angle = 270;
-        } else if (directionString == "up") {
-            direction[0] = 0;
-            direction[1] = -1;
-            angle = 0;
-        } else if (directionString == "right") {
-            direction[0] = 1;
-            direction[1] = 0;
-            angle = 90;
-        } else if (directionString == "down") {
-            direction[0] = 0;
-            direction[1] = 1;
-            angle = 180;
-        }
-
+    @Override
+    protected void changeDirection (Direction direction){
         lastDirectionPressed = direction;
-
-        if (grid.canMoveInDirection(getX(), getY(), direction)){
-            setSpeed(speed);
-            setDirection(angle);
-            this.direction = direction;
-        }
-
+        super.changeDirection(direction);
     }
 
     @Override
     public void update() {
 
-        if (grid.canMoveInDirection(getX(), getY(), lastDirectionPressed)){
-            if (lastDirectionPressed[0] == -1) {
-                changeDirection("left");
-            } else if (lastDirectionPressed[0] == 1){
-                changeDirection("right");
-            } else if (lastDirectionPressed[1] == -1){
-                changeDirection("up");
-            } else if (lastDirectionPressed[1] == 1){
-                changeDirection("down");
-            }
-            return;
-        }
-
-        if (!grid.canMoveInDirection(getX(), getY(), direction)){
+        if (!grid.canMoveInDirection(getX(), getY(), currentDirection)) {
             setSpeed(0);
+        }
+        if (grid.canMoveInDirection(getX(), getY(), lastDirectionPressed)) {
+            changeDirection(lastDirectionPressed);
         }
     }
 
