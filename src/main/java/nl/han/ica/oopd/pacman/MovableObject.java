@@ -46,7 +46,12 @@ public abstract class MovableObject extends GameObject {
             setSpeed(speed);
             hasStarted = true;
         }
+    }
 
+    public void reset(){
+        hasStarted = false;
+        speed = 0;
+        setSpeed(speed);
     }
 
 

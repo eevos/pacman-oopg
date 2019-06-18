@@ -1,14 +1,16 @@
 package nl.han.ica.oopd.pacman;
 
+import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopg.collision.CollidedTile;
 import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
 import nl.han.ica.oopg.collision.ICollidableWithTiles;
 import nl.han.ica.oopg.objects.GameObject;
 import processing.core.PGraphics;
+import processing.core.PVector;
 
 import java.util.List;
 
-public class Player extends MovableObject implements ICollidableWithGameObjects {
+public class Player extends MovableObject implements ICollidableWithGameObjects, ICollidableWithTiles {
     Pacman world;
 
     private Direction lastDirectionPressed = new Direction();
@@ -43,7 +45,6 @@ public class Player extends MovableObject implements ICollidableWithGameObjects 
         lastDirectionPressed = direction;
 
         if (grid.canMoveInDirection(getX(), getY(), direction)) {
-            System.out.println("yeah");
             changeDirection(direction);
         }
     }
@@ -75,7 +76,28 @@ public class Player extends MovableObject implements ICollidableWithGameObjects 
 
     @Override
     public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
+        for (GameObject g : collidedGameObjects) {
+            if (g instanceof Enemy) {
+                world.reset();
+            }
+        }
+    }
 
+    @Override
+    public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
+        PVector vector;
+
+
+        for (CollidedTile ct : collidedTiles) {
+
+            if (ct.getTile() instanceof BreadcrumbTile) {
+                vector = world.getTileMap().getTilePixelLocation(ct.getTile());
+                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 2);
+                world.addPointsToScore();
+
+            }
+
+        }
     }
 }
 
