@@ -1,5 +1,6 @@
 package nl.han.ica.oopd.pacman;
 
+import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
 import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopg.collision.CollidedTile;
 import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
@@ -73,6 +74,9 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         g.rect(getX(), getY(), width, height);
     }
 
+//  Enemy draait van richting als ze elkaar raken:
+// dit in enemy zetten  (implements gameobjectcollissionoccurred)
+//    ipv world.reset() : g.direction = andere kant ("inverse")
 
     @Override
     public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
@@ -90,11 +94,15 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
 
         for (CollidedTile ct : collidedTiles) {
 
-            if (ct.getTile() instanceof BreadcrumbTile) {
+            if ((ct.getTile() instanceof BreadcrumbTile)) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
-                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 2);
-                world.addPointsToScore();
+                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
+                world.addPointsToScore(10); //BreadcrumbTile.getScore() invoegen
 
+            } else if ((ct.getTile() instanceof Breadcrumb2Tile)) {
+                vector = world.getTileMap().getTilePixelLocation(ct.getTile());
+                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
+                world.addPointsToScore(20);
             }
 
         }

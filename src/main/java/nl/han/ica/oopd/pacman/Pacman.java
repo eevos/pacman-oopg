@@ -1,5 +1,6 @@
 package nl.han.ica.oopd.pacman;
 
+import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
 import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopd.pacman.tiles.WallTile;
 import nl.han.ica.oopg.engine.GameEngine;
@@ -116,17 +117,21 @@ public class Pacman extends GameEngine {
         /* TILES */
         Sprite wallSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/wall.png");
         Sprite breadcrumbSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb.png");
+        Sprite breadcrumb2Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb2.png");
+
         TileType<WallTile> wallTileType = new TileType<>(WallTile.class, wallSprite);
         TileType<BreadcrumbTile> breadcrumbTileType = new TileType<>(BreadcrumbTile.class, breadcrumbSprite);
+        TileType<Breadcrumb2Tile> breadcrumb2TileType = new TileType<>(Breadcrumb2Tile.class, breadcrumb2Sprite);
 
-        TileType[] tileTypes = {wallTileType, breadcrumbTileType};
+        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType};
 
         tileMap = new TileMap(tileSize, tileTypes, grid.getGridMap());
     }
 
 
-    public void addPointsToScore(){
-        score += 10;
+    public void addPointsToScore(int crumbScore){
+
+        score += crumbScore;
     }
 
     public int getScore() {
