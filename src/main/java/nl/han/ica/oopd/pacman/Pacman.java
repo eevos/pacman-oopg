@@ -1,14 +1,14 @@
 package nl.han.ica.oopd.pacman;
 
-import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
-import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
-import nl.han.ica.oopd.pacman.tiles.WallTile;
+import nl.han.ica.oopd.pacman.tiles.*;
 import nl.han.ica.oopg.engine.GameEngine;
 import nl.han.ica.oopg.objects.Sprite;
 import nl.han.ica.oopg.tile.TileMap;
 import nl.han.ica.oopg.tile.TileType;
 import nl.han.ica.oopg.view.View;
 import processing.core.PApplet;
+
+import static java.lang.System.currentTimeMillis;
 
 public class Pacman extends GameEngine {
 
@@ -118,12 +118,17 @@ public class Pacman extends GameEngine {
         Sprite wallSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/wall.png");
         Sprite breadcrumbSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb.png");
         Sprite breadcrumb2Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb2.png");
+        Sprite breadcrumb3Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb3.png");
+        Sprite emptySprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/empty.png");
 
         TileType<WallTile> wallTileType = new TileType<>(WallTile.class, wallSprite);
         TileType<BreadcrumbTile> breadcrumbTileType = new TileType<>(BreadcrumbTile.class, breadcrumbSprite);
         TileType<Breadcrumb2Tile> breadcrumb2TileType = new TileType<>(Breadcrumb2Tile.class, breadcrumb2Sprite);
+        TileType<Breadcrumb3Tile> breadcrumb3TileType = new TileType<>(Breadcrumb3Tile.class, breadcrumb3Sprite);
+        TileType<EmptyTile> emptyTileTileType = new TileType<EmptyTile>(EmptyTile.class, emptySprite);
 
-        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType};
+
+        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType, breadcrumb3TileType, emptyTileTileType};
 
         tileMap = new TileMap(tileSize, tileTypes, grid.getGridMap());
     }
@@ -138,7 +143,17 @@ public class Pacman extends GameEngine {
         return score;
     }
 
+    public int setTimedSpeedUp(int setTimer){
 
+        long startTime = currentTimeMillis() + setTimer;
+
+        while (currentTimeMillis() < startTime){
+//            System.out.println(currentTimeMillis());
+            player.baseSpeed = (int) (player.baseSpeed * 1.5);
+        }
+        player.baseSpeed = 4;
+        return player.speed;
+    }
 
     protected void reset(){
 

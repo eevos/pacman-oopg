@@ -1,6 +1,7 @@
 package nl.han.ica.oopd.pacman;
 
 import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
+import nl.han.ica.oopd.pacman.tiles.Breadcrumb3Tile;
 import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopg.collision.CollidedTile;
 import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
@@ -52,7 +53,7 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
 
 
     @Override
-    protected void changeDirection (Direction direction){
+    protected void changeDirection(Direction direction) {
         super.changeDirection(direction);
     }
 
@@ -94,19 +95,26 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
 
         for (CollidedTile ct : collidedTiles) {
 
-            if ((ct.getTile() instanceof BreadcrumbTile)) {
+            if (ct.getTile() instanceof BreadcrumbTile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-                world.addPointsToScore(10); //BreadcrumbTile.getScore() invoegen
+                world.addPointsToScore(10); //BreadcrumbTile.getScore()); //invoegen
 
-            } else if ((ct.getTile() instanceof Breadcrumb2Tile)) {
+            } else if (ct.getTile() instanceof Breadcrumb2Tile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
                 world.addPointsToScore(20);
-            }
 
+            } else if (ct.getTile() instanceof Breadcrumb3Tile) {
+                vector = world.getTileMap().getTilePixelLocation(ct.getTile());
+                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
+//                world.setTimedSpeedUp(500);
+            }
         }
+
     }
+
+
 }
 
 
