@@ -94,9 +94,7 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 2);
                 world.addPointsToScore();
-
             }
-
         }
     }
 }
