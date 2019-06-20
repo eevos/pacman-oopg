@@ -1,14 +1,41 @@
 package nl.han.ica.oopd.pacman;
 
+import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
 import nl.han.ica.oopg.objects.GameObject;
 import processing.core.PGraphics;
 
-public class Enemy extends MovableObject {
+import java.util.List;
+
+public class Enemy extends MovableObject implements ICollidableWithGameObjects {
     private Pacman world;
     private Direction turnDirection = new Direction();
     private Direction lastDirection = new Direction();
 
+    @Override
+    public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
 
+        for (GameObject g : collidedGameObjects) {
+            if (g instanceof Enemy) {
+//                g.setxSpeed(g.getxSpeed()*-1);    //oplossing1?
+
+//                if (getxSpeed() > 0) {            //oplossing2?
+//                    setxSpeed(-speed);
+//                }
+//                else {
+//                    setxSpeed(speed);
+//                }
+
+//                Direction newDirection = new Direction(); //x=0, y=0  //oplossing3?
+//                changeDirection((newDirection));
+
+//                g.setDirection(getDirection()*-1);   //oplossing4?
+            }
+        }
+
+//  Enemy draait van richting als ze elkaar raken:
+// dit in enemy zetten  (implements gameobjectcollissionoccurred)
+//    ipv world.reset() : g.direction = andere kant ("inverse")
+    }
 
     Enemy(Pacman world, int baseSpeed) {
         super(50, 50, 40, 40);
@@ -63,10 +90,16 @@ public class Enemy extends MovableObject {
         }
     }
 
+//    private int enemyColorR = (int) Math.floor(Math.random() * 255);
+//    private int enemyColorG = (int) Math.floor(Math.random() * 255);
+//    private int enemyColorB = (int) Math.floor(Math.random() * 255);
+
     @Override
     public void draw(PGraphics g) {
         g.stroke(0, 50, 200, 100);
-        g.fill(255, 0,0);
+
+        g.fill(255, 0, 0);
+
         g.rect(getX(), getY(), width, height);
     }
 }

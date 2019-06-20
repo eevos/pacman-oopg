@@ -25,6 +25,10 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         this.baseSpeed = baseSpeed;
     }
 
+    public void setTimedSpeedUp(int speed) {
+        this.baseSpeed = speed;
+    }
+
     @Override
     public void keyPressed(int keyCode, char key) {
 
@@ -40,6 +44,13 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
             direction.x = 1;
         } else if (keyCode == world.DOWN) {
             direction.y = 1;
+        } else if (key == ' ') {
+            System.out.println("getDirection" + getDirection());
+            System.out.println("getSpeed!" + getSpeed());
+            System.out.println("getX!" + getX());
+            System.out.println("getY!" + getY());
+            Projectile bomb = new Projectile(world, (int) getDirection(), (int) getSpeed(), (int) getX(), (int) getY());
+            world.addGameObject(bomb, getX(), getY());
         } else {
             return;
         }
@@ -71,13 +82,11 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
     @Override
     public void draw(PGraphics g) {
         g.stroke(0, 50, 200, 100);
-        g.fill(200);
-        g.rect(getX(), getY(), width, height);
+        g.fill(255,255 ,0);
+        g.ellipseMode(CORNER);
+        g.ellipse(getX(), getY(), width, height);
     }
 
-//  Enemy draait van richting als ze elkaar raken:
-// dit in enemy zetten  (implements gameobjectcollissionoccurred)
-//    ipv world.reset() : g.direction = andere kant ("inverse")
 
     @Override
     public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
@@ -91,7 +100,6 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
     @Override
     public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
         PVector vector;
-
 
         for (CollidedTile ct : collidedTiles) {
 
@@ -108,7 +116,8 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
             } else if (ct.getTile() instanceof Breadcrumb3Tile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-//                world.setTimedSpeedUp(500);
+//                System.out.println("this.baseSpeed  = 10");
+//                setTimedSpeedUp(10);
             }
         }
 

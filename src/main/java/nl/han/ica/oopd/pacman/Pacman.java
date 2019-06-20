@@ -110,7 +110,6 @@ public class Pacman extends GameEngine {
                 i++;
             }
         }
-
     }
 
     private void initializeTileMap() {
@@ -141,18 +140,6 @@ public class Pacman extends GameEngine {
 
     public int getScore() {
         return score;
-    }
-
-    public int setTimedSpeedUp(int setTimer){
-
-        long startTime = currentTimeMillis() + setTimer;
-
-        while (currentTimeMillis() < startTime){
-//            System.out.println(currentTimeMillis());
-            player.baseSpeed = (int) (player.baseSpeed * 1.5);
-        }
-        player.baseSpeed = 4;
-        return player.speed;
     }
 
     protected void reset(){
