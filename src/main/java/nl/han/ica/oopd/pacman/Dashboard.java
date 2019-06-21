@@ -18,15 +18,21 @@ public class Dashboard extends GameObject {
 
     }
 
+    public int addPoints;
+
     @Override
     public void draw(PGraphics g) {
+        float textX = x + width/4 -25;
+
         g.fill(50, 100, 50);
         g.rect(x, y, width, height);
 
         g.fill(0);
-        g.textSize(32);
-        g.text("Score", x + width/4, y + 50);
-        g.text(world.getScore(), x + width/4, y + 80);
+        g.textSize(28);
+        g.text("Score", textX, y + 50);
+        g.text(world.getScore(), textX , y + 80);
+        g.text("Last crumb", textX, y + 110);
+        g.text(addPoints, textX, y + 140);
 
 
     }

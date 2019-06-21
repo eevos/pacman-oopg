@@ -1,5 +1,8 @@
 package nl.han.ica.oopd.pacman;
 
+import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
+import nl.han.ica.oopd.pacman.tiles.Breadcrumb3Tile;
+import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopd.pacman.tiles.WallTile;
 import nl.han.ica.oopg.collision.CollidedTile;
 import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
@@ -9,9 +12,13 @@ import nl.han.ica.oopg.objects.GameObject;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Projectile extends GameObject implements ICollidableWithGameObjects {
+// Eigenlijk moet PRojectile extends MovableObject (of niet? maakt ook niet uit eigenlijk),
+// maar dan heeft Projectile geen snelheid meer.
+
+public class Projectile extends GameObject implements ICollidableWithGameObjects, ICollidableWithTiles {
     private int speed;
     private int xspeed;
     private int yspeed;
@@ -28,6 +35,7 @@ public class Projectile extends GameObject implements ICollidableWithGameObjects
         setySpeed(yspeed);
         setxSpeed(xspeed);
     }
+
     public void setxySpeedFromPlayerDirection(int playerDirection) {
         int direction = playerDirection;
         switch (direction) {
@@ -52,10 +60,10 @@ public class Projectile extends GameObject implements ICollidableWithGameObjects
 
     @Override
     public void draw(PGraphics g) {
-        g.ellipseMode(g.CORNER); // Omdat cirkel anders vanuit midden wordt getekend en dat problemen geeft bij collisiondetectie
+        g.ellipseMode(g.CORNER);
         g.stroke(0, 50, 200, 100);
         g.fill(255, 131, 0);
-        g.ellipse(getX()+20, getY()+20, 10, 10);
+        g.ellipse(getX() + 20, getY() + 20, 10, 10);
     }
 
     @Override
@@ -63,55 +71,27 @@ public class Projectile extends GameObject implements ICollidableWithGameObjects
     }
 
     @Override
-    public void gameObjectCollisionOccurred(List<GameObject> collidedObjects) {
+    public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
         PVector vector;
-        float size = 10;
 
-        System.out.println("Collides");
-        System.out.println(collidedObjects);
-//        for (CollidedTile ct : collidedTiles) {
-//            if (ct.theTile instanceof WallTile) {
-//                if (ct.collisionSide == ct.TOP) {
-//                    try {
-//                        vector = world.getTileMap().getTilePixelLocation(ct.theTile);
-//                        System.out.println(vector);
-//                        setY(vector.y - getHeight());
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (ct.collisionSide == ct.BOTTOM) {
-//                    try {
-//                        vector = world.getTileMap().getTilePixelLocation(ct.theTile);
-//                        System.out.println(vector);
-//                        setY(vector.y + getHeight() + size * 3 / 4);
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (ct.collisionSide == ct.RIGHT) {
-//                    try {
-//                        vector = world.getTileMap().getTilePixelLocation(ct.theTile);
-//                        System.out.println(vector);
-//                        setX(vector.x + getWidth() + size * 3 / 4);
-//                        //world.getTileMap().setTile((int) vector.x / 50, (int) vector.y / 50, -1);
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if (ct.collisionSide == ct.LEFT) {
-//                    try {
-//                        System.out.println(world);
-//                        vector = world.getTileMap().getTilePixelLocation(ct.theTile);
-//                        System.out.println(vector);
-//                        setX(vector.x - getWidth());
-//                        //world.getTileMap().setTile((int) vector.x / 50, (int) vector.y / 50, -1);
-//                    } catch (TileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//    }
+        for (CollidedTile ct : collidedTiles) {
+            if (ct.getTile() instanceof WallTile) {
+//                System.out.print("Projectile hits WallTile");
+                world.deleteGameObject(this);
+            }
+            return;
+        }
     }
 
+    @Override
+    public void gameObjectCollisionOccurred(List<GameObject> collidedGameObjects) {
+
+        for (GameObject g : collidedGameObjects) {
+            if (g instanceof Enemy) {
+//                System.out.println("Projectile collides with Eemeney");
+                world.deleteGameObject(this);
+                world.deleteGameObject(g);
+            }
+        }
+    }
 }

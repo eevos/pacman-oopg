@@ -100,7 +100,7 @@ public class Pacman extends GameEngine {
 
         addGameObject(dashboard , worldWidth - uiSize, 0);
 
-
+//Toevoegen objects aan positie afhankelijk van player of niet.
         int i = -1;
         for (MovableObject movableObject : movableObjects) {
             if (movableObject instanceof Player) {
@@ -117,17 +117,17 @@ public class Pacman extends GameEngine {
         Sprite wallSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/wall.png");
         Sprite breadcrumbSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb.png");
         Sprite breadcrumb2Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb2.png");
-        Sprite breadcrumb3Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb3.png");
+//        Sprite breadcrumb3Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb3.png");
         Sprite emptySprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/empty.png");
 
         TileType<WallTile> wallTileType = new TileType<>(WallTile.class, wallSprite);
         TileType<BreadcrumbTile> breadcrumbTileType = new TileType<>(BreadcrumbTile.class, breadcrumbSprite);
         TileType<Breadcrumb2Tile> breadcrumb2TileType = new TileType<>(Breadcrumb2Tile.class, breadcrumb2Sprite);
-        TileType<Breadcrumb3Tile> breadcrumb3TileType = new TileType<>(Breadcrumb3Tile.class, breadcrumb3Sprite);
+//        TileType<Breadcrumb3Tile> breadcrumb3TileType = new TileType<>(Breadcrumb3Tile.class, breadcrumb3Sprite);
         TileType<EmptyTile> emptyTileTileType = new TileType<EmptyTile>(EmptyTile.class, emptySprite);
 
 
-        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType, breadcrumb3TileType, emptyTileTileType};
+        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType, emptyTileTileType};
 
         tileMap = new TileMap(tileSize, tileTypes, grid.getGridMap());
     }
@@ -136,6 +136,7 @@ public class Pacman extends GameEngine {
     public void addPointsToScore(int crumbScore){
 
         score += crumbScore;
+        dashboard.addPoints = crumbScore;
     }
 
     public int getScore() {
