@@ -39,7 +39,7 @@ public class CollidedTile {
 	/**
 	 * The tile involved in the collision.
 	 */
-	protected Tile theTile;
+    public Tile theTile;
 
 	/**
 	 * The side of the tile onto which the Object has collided. See constants

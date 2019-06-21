@@ -5,20 +5,16 @@ import nl.han.ica.oopg.objects.Sprite;
 import nl.han.ica.oopg.tile.Tile;
 
 
-public class BreadcrumbTile extends Tile {
-    public int score = 0;
+public class Breadcrumb2Tile extends Tile {
 
     /**
      * @param sprite The image which will be drawn whenever the draw method of the tile is called.
      */
-    public BreadcrumbTile(Sprite sprite) {
+    public Breadcrumb2Tile(Sprite sprite) {
 
         super(sprite);
-        this.score = 10;
+        int score = 20;
     }
 
-    public int getScore(){
-        return score;
-    }
 
 }
