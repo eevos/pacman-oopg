@@ -8,14 +8,12 @@ import nl.han.ica.oopg.tile.TileType;
 import nl.han.ica.oopg.view.View;
 import processing.core.PApplet;
 
-import static java.lang.System.currentTimeMillis;
-
 public class Pacman extends GameEngine {
 
 
-    private int playerXPosition;
-    private int playerYPosition;
-    private int enemyYPosition;
+    private int playerStartXPosition;
+    private int playerStartYPosition;
+    private int enemyStartYPosition;
 
     private Dashboard dashboard;
 
@@ -36,7 +34,7 @@ public class Pacman extends GameEngine {
     private int baseSpeed;
     private int numberOfTileColumns;
     private int numberOfTileRows;
-    private Grid grid = Grid.getInstance();
+    private Grid grid;
 
 
     public static void main(String[] args) {
@@ -52,11 +50,12 @@ public class Pacman extends GameEngine {
 
         tileSize = 40;
         baseSpeed = 4;
-        grid.setProperties(tileSize, baseSpeed);
 
-        playerXPosition = grid.getPostion(9);
-        playerYPosition = grid.getPostion(12);
-        enemyYPosition = grid.getPostion(8);
+        grid = new Grid(tileSize, baseSpeed);
+
+        playerStartXPosition = grid.getPostion(9);
+        playerStartYPosition = grid.getPostion(12);
+        enemyStartYPosition = grid.getPostion(8);
 
         numberOfTileRows = grid.getGridMap().length;
         numberOfTileColumns = grid.getGridMap()[0].length;
@@ -87,11 +86,11 @@ public class Pacman extends GameEngine {
     }
 
     private void createObjects() {
-        player = new Player(this, baseSpeed);
+        player = new Player(this, grid);
         dashboard = new Dashboard(this, uiSize, worldHeight);
-        enemy1 = new Enemy(this, baseSpeed);
-        enemy2 = new Enemy(this, baseSpeed);
-        enemy3 = new Enemy(this, baseSpeed);
+        enemy1 = new Enemy(this, grid);
+        enemy2 = new Enemy(this, grid);
+        enemy3 = new Enemy(this, grid);
 
         movableObjects[0] = player;
         movableObjects[1] = enemy1;
@@ -100,13 +99,12 @@ public class Pacman extends GameEngine {
 
         addGameObject(dashboard , worldWidth - uiSize, 0);
 
-//Toevoegen objects aan positie afhankelijk van player of niet.
         int i = -1;
         for (MovableObject movableObject : movableObjects) {
             if (movableObject instanceof Player) {
-                addGameObject(movableObject, playerXPosition, playerYPosition);
+                addGameObject(movableObject, playerStartXPosition, playerStartYPosition);
             } else {
-                addGameObject(movableObject, playerXPosition + tileSize * i, enemyYPosition);
+                addGameObject(movableObject, playerStartXPosition + tileSize * i, enemyStartYPosition);
                 i++;
             }
         }
@@ -117,17 +115,13 @@ public class Pacman extends GameEngine {
         Sprite wallSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/wall.png");
         Sprite breadcrumbSprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb.png");
         Sprite breadcrumb2Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb2.png");
-//        Sprite breadcrumb3Sprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/breadcrumb3.png");
-        Sprite emptySprite = new Sprite("src/main/java/nl/han/ica/oopd/pacman/media/empty.png");
 
         TileType<WallTile> wallTileType = new TileType<>(WallTile.class, wallSprite);
         TileType<BreadcrumbTile> breadcrumbTileType = new TileType<>(BreadcrumbTile.class, breadcrumbSprite);
         TileType<Breadcrumb2Tile> breadcrumb2TileType = new TileType<>(Breadcrumb2Tile.class, breadcrumb2Sprite);
-//        TileType<Breadcrumb3Tile> breadcrumb3TileType = new TileType<>(Breadcrumb3Tile.class, breadcrumb3Sprite);
-        TileType<EmptyTile> emptyTileTileType = new TileType<EmptyTile>(EmptyTile.class, emptySprite);
 
 
-        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType, emptyTileTileType};
+        TileType[] tileTypes = {wallTileType, breadcrumbTileType, breadcrumb2TileType};
 
         tileMap = new TileMap(tileSize, tileTypes, grid.getGridMap());
     }
@@ -136,28 +130,35 @@ public class Pacman extends GameEngine {
     public void addPointsToScore(int crumbScore){
 
         score += crumbScore;
-        dashboard.addPoints = crumbScore;
+        dashboard.setLastCrumbPoints(crumbScore);;
     }
 
     public int getScore() {
         return score;
     }
 
-    protected void reset(){
+    public int getBaseSpeed() {
+        return baseSpeed;
+    }
+
+    public int getTileSize(){
+        return tileSize;
+    }
+
+    public void reset(){
 
         int i = -1;
         for (MovableObject movableObject : movableObjects) {
-            System.out.println(movableObject);
 
             int xPos;
             int yPos;
 
             if (movableObject instanceof Player) {
-                xPos = playerXPosition;
-                yPos = playerYPosition;
+                xPos = playerStartXPosition;
+                yPos = playerStartYPosition;
             } else {
-                xPos = playerXPosition + tileSize * i;
-                yPos = enemyYPosition;
+                xPos = playerStartXPosition + tileSize * i;
+                yPos = enemyStartYPosition;
                 i++;
             }
             movableObject.setX(xPos);
@@ -165,8 +166,6 @@ public class Pacman extends GameEngine {
 
             movableObject.reset();
             score = 0;
-
         }
-
     }
 }

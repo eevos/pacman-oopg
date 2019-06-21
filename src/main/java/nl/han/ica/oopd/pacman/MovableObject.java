@@ -4,43 +4,37 @@ import nl.han.ica.oopg.objects.GameObject;
 
 public abstract class MovableObject extends GameObject {
 
-    protected Grid grid = Grid.getInstance();
+    protected Grid grid;
+    protected Pacman world;
     protected Direction currentDirection = new Direction();
-    protected int baseSpeed;
-    protected int speed = 0;
+    protected int speed;
+
+    private int baseSpeed;
     private boolean hasStarted = false;
 
+    public MovableObject(Pacman world, Grid grid){
 
-    MovableObject(int x, int y, int width, int heigth) {
-        super(x, y, width, heigth);
+        this.world = world;
+        this.grid = grid;
+
+        setWidth(world.getTileSize());
+        setHeight(world.getTileSize());
+        baseSpeed = world.getBaseSpeed();
+        speed = 0;
     }
-
 
     protected void changeDirection(Direction direction) {
 
-
         if (grid.canMoveInDirection(getX(), getY(), direction)) {
-            int angle = 0;
-
-            if (direction.x == -1) {
-                angle = 270;
-            } else if (direction.y == -1) {
-                angle = 0;
-            } else if (direction.x == 1) {
-                angle = 90;
-            } else if (direction.y == 1) {
-                angle = 180;
-            }
 
             setSpeed(speed);
-            setDirection(angle);
+            setDirection(direction.getAngle());
             currentDirection = direction;
         }
     }
 
     @Override
     public void keyPressed(int keyCode, char key) {
-
         if (!hasStarted) {
             speed = baseSpeed;
             setSpeed(speed);
@@ -55,8 +49,4 @@ public abstract class MovableObject extends GameObject {
     }
 
 
-    @Override
-    public void update() {
-
-    }
 }

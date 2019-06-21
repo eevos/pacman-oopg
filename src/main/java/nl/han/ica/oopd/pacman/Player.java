@@ -1,7 +1,6 @@
 package nl.han.ica.oopd.pacman;
 
 import nl.han.ica.oopd.pacman.tiles.Breadcrumb2Tile;
-import nl.han.ica.oopd.pacman.tiles.Breadcrumb3Tile;
 import nl.han.ica.oopd.pacman.tiles.BreadcrumbTile;
 import nl.han.ica.oopg.collision.CollidedTile;
 import nl.han.ica.oopg.collision.ICollidableWithGameObjects;
@@ -13,20 +12,10 @@ import processing.core.PVector;
 import java.util.List;
 
 public class Player extends MovableObject implements ICollidableWithGameObjects, ICollidableWithTiles {
-    Pacman world;
-
     private Direction lastDirectionPressed = new Direction();
 
-
-    public Player(Pacman world, int baseSpeed) {
-
-        super(50, 50, 40, 40);
-        this.world = world;
-        this.baseSpeed = baseSpeed;
-    }
-
-    public void setTimedSpeedUp(int speed) {
-        this.baseSpeed = speed;
+    public Player(Pacman world, Grid grid) {
+        super(world, grid);
     }
 
     @Override
@@ -45,9 +34,8 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         } else if (keyCode == world.DOWN) {
             direction.y = 1;
         } else if (key == ' ') {
-            Projectile bomb = new Projectile(world, (int) getDirection(), (int) getSpeed(), (int) getX(), (int) getY());
+            Projectile bomb = new Projectile(world, currentDirection, speed);
             world.addGameObject(bomb, getX(), getY());
-
         } else {
             return;
         }
@@ -60,14 +48,9 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
     }
 
 
-    @Override
-    protected void changeDirection(Direction direction) {
-        super.changeDirection(direction);
-    }
 
     @Override
     public void update() {
-        //currentdir => kan ik met deze richting nog vooruit?
         if (!grid.canMoveInDirection(getX(), getY(), currentDirection)) {
             setSpeed(0);
         }
@@ -79,7 +62,7 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
     @Override
     public void draw(PGraphics g) {
         g.stroke(0, 50, 200, 100);
-        g.fill(255,255 ,0);
+        g.fill(255, 255, 0);
         g.ellipseMode(CORNER);
         g.ellipse(getX(), getY(), width, height);
     }
@@ -94,9 +77,6 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         }
     }
 
-
-    //BreadcrumbTile.getScore()); //invoegen ipv hardcoded 10 en 20
-
     @Override
     public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
         PVector vector;
@@ -105,15 +85,12 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
 
             if (ct.getTile() instanceof BreadcrumbTile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
-
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-
                 world.addPointsToScore(10);
 
             } else if (ct.getTile() instanceof Breadcrumb2Tile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-
                 world.addPointsToScore(20);
             }
         }

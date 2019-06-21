@@ -6,6 +6,7 @@ import processing.core.PGraphics;
 public class Dashboard extends GameObject {
 
     private Pacman world;
+    private int lastCrumbPoints;
 
     public Dashboard(Pacman world, float width, float height){
         this.world = world;
@@ -18,7 +19,9 @@ public class Dashboard extends GameObject {
 
     }
 
-    public int addPoints;
+    public void setLastCrumbPoints (int points){
+        lastCrumbPoints = points;
+    };
 
     @Override
     public void draw(PGraphics g) {
@@ -32,8 +35,6 @@ public class Dashboard extends GameObject {
         g.text("Score", textX, y + 50);
         g.text(world.getScore(), textX , y + 80);
         g.text("Last crumb", textX, y + 110);
-        g.text(addPoints, textX, y + 140);
-
-
+        g.text(lastCrumbPoints, textX, y + 140);
     }
 }

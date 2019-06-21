@@ -16,9 +16,4 @@ public class BreadcrumbTile extends Tile {
         super(sprite);
         this.score = 10;
     }
-
-    public int getScore(){
-        return score;
-    }
-
 }
