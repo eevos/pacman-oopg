@@ -45,12 +45,9 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         } else if (keyCode == world.DOWN) {
             direction.y = 1;
         } else if (key == ' ') {
-            System.out.println("getDirection" + getDirection());
-            System.out.println("getSpeed!" + getSpeed());
-            System.out.println("getX!" + getX());
-            System.out.println("getY!" + getY());
             Projectile bomb = new Projectile(world, (int) getDirection(), (int) getSpeed(), (int) getX(), (int) getY());
             world.addGameObject(bomb, getX(), getY());
+
         } else {
             return;
         }
@@ -70,7 +67,7 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
 
     @Override
     public void update() {
-
+        //currentdir => kan ik met deze richting nog vooruit?
         if (!grid.canMoveInDirection(getX(), getY(), currentDirection)) {
             setSpeed(0);
         }
@@ -97,6 +94,9 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         }
     }
 
+
+    //BreadcrumbTile.getScore()); //invoegen ipv hardcoded 10 en 20
+
     @Override
     public void tileCollisionOccurred(List<CollidedTile> collidedTiles) {
         PVector vector;
@@ -107,24 +107,17 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
 
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-                world.addPointsToScore(10); //BreadcrumbTile.getScore()); //invoegen
+
+                world.addPointsToScore(10);
 
             } else if (ct.getTile() instanceof Breadcrumb2Tile) {
                 vector = world.getTileMap().getTilePixelLocation(ct.getTile());
                 world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-                world.addPointsToScore(20);
 
-            } else if (ct.getTile() instanceof Breadcrumb3Tile) {
-                vector = world.getTileMap().getTilePixelLocation(ct.getTile());
-                world.getTileMap().setTile(grid.gridPosition(vector.x), grid.gridPosition(vector.y), 99);
-//                System.out.println("this.baseSpeed  = 10");
-//                setTimedSpeedUp(10);
+                world.addPointsToScore(20);
             }
         }
-
     }
-
-
 }
 
 
