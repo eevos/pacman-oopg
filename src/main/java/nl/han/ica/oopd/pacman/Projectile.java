@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Projectile extends GameObject implements ICollidableWithGameObjects, ICollidableWithTiles {
     private int speed;
-    private int size = 2;
+    private int size = 10;
 
     private Direction direction;
     private Pacman world;
@@ -37,7 +37,7 @@ public class Projectile extends GameObject implements ICollidableWithGameObjects
         g.ellipseMode(g.CORNER);
         g.stroke(0, 50, 200, 100);
         g.fill(255, 131, 0);
-        g.ellipse(getX() + 20, getY() + 20, 10, 10);
+        g.ellipse(getX() + 20, getY() + 20, size, size);
     }
 
     @Override

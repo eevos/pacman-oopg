@@ -1,5 +1,11 @@
 package nl.han.ica.oopd.pacman;
 
+/** @author Mischa, Edwin
+ * @version 1.1
+ * @since 1.0
+ *
+ */
+
 public class Grid {
 
     private int tileSize;
@@ -66,7 +72,7 @@ public class Grid {
         boolean canMovePartTwo =
                 (currentModuloGridPosition[0] * direction.x != 0)
                         || (currentModuloGridPosition[1] * direction.y != 0);
-
+//        System.out.println("One : " + canMovePartOne + ", Two : " + canMovePartTwo + " - ");
         return canMovePartOne || canMovePartTwo;
     }
 
@@ -99,6 +105,16 @@ public class Grid {
         return new int[]{xGridPosition, yGridPosition};
     }
 
+    /**
+     * Geeft de restwaarde van de huidige gridcoördinaten terug ten opzichte van het grid.
+     * <p>Geeft de modulo terug maar wanneer de modulo lager is dan (tilesize / 40 * baseSpeed),
+     * dan wordt de restwaarde op 0 gezet. Omdat het systeem er moeite mee heeft: kiezen van richting wordt
+     * dan niet goed uitgevoerd</p>
+     * @param pos is de x of y van het object in de gridcoördinaten
+     * @return moduloGridPosition
+     * @since 1.0
+     *
+     */
     private int moduloGridPosition(float pos) {
         int moduloGridPosition = (int) ((pos) % tileSize);
 

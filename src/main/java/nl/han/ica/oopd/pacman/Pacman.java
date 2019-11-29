@@ -10,7 +10,6 @@ import processing.core.PApplet;
 
 public class Pacman extends GameEngine {
 
-
     private int playerStartXPosition;
     private int playerStartYPosition;
     private int enemyStartYPosition;

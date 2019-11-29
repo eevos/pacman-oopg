@@ -36,6 +36,7 @@ public class Player extends MovableObject implements ICollidableWithGameObjects,
         } else if (key == ' ') {
             Projectile bomb = new Projectile(world, currentDirection, speed);
             world.addGameObject(bomb, getX(), getY());
+//            System.out.println("Space-----------------------------Space");
         } else {
             return;
         }

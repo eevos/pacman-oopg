@@ -26,11 +26,12 @@ public abstract class MovableObject extends GameObject {
     protected void changeDirection(Direction direction) {
 
         if (grid.canMoveInDirection(getX(), getY(), direction)) {
-
+//            System.out.println(grid.canMoveInDirection(getX(), getY(), direction));
             setSpeed(speed);
             setDirection(direction.getAngle());
             currentDirection = direction;
         }
+
     }
 
     @Override
